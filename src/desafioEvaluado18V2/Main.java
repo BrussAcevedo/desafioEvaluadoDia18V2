@@ -9,7 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -26,7 +30,12 @@ public class Main {
 		String fichero = (directorio + "/" + "fichero.txt");
 		crearArchivo(directorio, fichero, lista);
 		int contador = buscarTexto(fichero, busqueda);
-		System.out.println("cantidad de repeticiones del texto -> "+contador);
+		if(contador > 0) {
+			System.out.println("cantidad de repeticiones del texto -> "+contador);
+		}else {
+			System.out.println("No se encuentra el dato solicitado");
+		}
+		
 
 	}
 	
@@ -96,6 +105,7 @@ public class Main {
 	}
 	
 	public static int buscarTexto(String fichero, String texto) {
+		ArrayList <String> listaBusqueda = new ArrayList<String>();
 		File file = new File(fichero);
 		int contador = 0;
 		if(file.exists()) {
@@ -105,10 +115,8 @@ public class Main {
 				String leerLinea = br.readLine();
 				while (leerLinea != null) {
 					
-					if(leerLinea.equalsIgnoreCase(texto)) {
-						contador++;
-					}
-					leerLinea = br.readLine();
+					listaBusqueda.add(leerLinea);
+					leerLinea = br.readLine();	
 					
 				}		
 				
@@ -117,7 +125,10 @@ public class Main {
 				e.printStackTrace();
 			}
 			
-
+			List<String> listaFiltrada = listaBusqueda.stream().filter(x-> x.equalsIgnoreCase(texto)).collect(Collectors.toList());
+			contador = listaFiltrada.size();
+			
+			
 		}else {
 			System.out.println("El fichero ingresado no existe.");
 		}
