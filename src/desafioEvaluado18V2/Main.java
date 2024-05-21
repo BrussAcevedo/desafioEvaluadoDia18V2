@@ -16,19 +16,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner scan = new Scanner(System.in);
-		ArrayList<String> lista = new ArrayList<String>();
 
-		lista.add("Perro");
-		lista.add("Gato");
-		lista.add("Juan");
-		lista.add("Daniel");
-		lista.add("Juan");
-		lista.add("Gato");
-		lista.add("Perro");
-		lista.add("Camila");
-		lista.add("Daniel");
-		lista.add("Camila");
-		
+		ArrayList<String> lista = listaEntrada("src/desafioEvaluado18V2/entrada.txt");		
 		System.out.println("Porfavor indica el elemento a buscar;");
 		String busqueda = scan.nextLine();
 		scan.close();
@@ -40,6 +29,30 @@ public class Main {
 		System.out.println("cantidad de repeticiones del texto -> "+contador);
 
 	}
+	
+	
+	public static ArrayList<String> listaEntrada(String ubicacionDelArchivo){
+		ArrayList<String> lista = new ArrayList<String>();
+		File dir = new File (ubicacionDelArchivo);
+		if (dir.exists()) {
+			
+			try (FileReader fr = new FileReader(dir); BufferedReader br = new BufferedReader(fr);){
+				String leerLinea = br.readLine();
+				while (leerLinea != null) {
+					lista.add(leerLinea);
+					leerLinea = br.readLine();
+				}	
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		}
+		
+		return lista;
+	}
+	
+	
 
 	public static void crearArchivo(String directorio, String fichero, ArrayList<String> lista) {
 		File dir = new File(directorio);
@@ -66,7 +79,7 @@ public class Main {
 		}
 
 		try (FileWriter fw = new FileWriter(fichero); BufferedWriter bw = new BufferedWriter(fw);) {
-			//Iterator solicitado en el punto 4.
+		
 			Iterator<String> iterador = lista.iterator();
 
 			while (iterador.hasNext()) {
@@ -93,9 +106,7 @@ public class Main {
 				while (leerLinea != null) {
 					
 					if(leerLinea.equalsIgnoreCase(texto)) {
-						
 						contador++;
-						
 					}
 					leerLinea = br.readLine();
 					
